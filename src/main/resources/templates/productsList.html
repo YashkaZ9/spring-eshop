@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+<table align="center">
+    <tr>
+        <td>Title</td>
+        <td>Price</td>
+        <td></td>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.title}">product</td>
+        <td th:text="${product.price}">0</td>
+        <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{id}/cart(id=${product.id})}">Add to cart</a></td>
+    </tr>
+</table>
+<br>
+<form sec:authorize="hasAuthority('ADMIN')" th:action="@{/products}" method="post" th:object="${productSpec}">
+    <h4>New product</h4>
+    <table>
+        <tr>
+            <td>Title</td>
+            <td><input type="text" th:field="*{title}"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" th:field="*{price}"></td>
+        </tr>
+    </table>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
