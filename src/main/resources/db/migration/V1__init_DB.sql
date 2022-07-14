@@ -52,7 +52,7 @@ create table products
 (
     id          int8 not null,
     title       varchar(255),
-    price       float8,
+    price       numeric(19,2),
     description varchar(255),
     image       oid,
     primary key (id)

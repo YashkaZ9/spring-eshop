@@ -1,17 +1,14 @@
 package com.baykov.springeshop.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "order_contents")
 public class OrderContents {
@@ -38,6 +35,6 @@ public class OrderContents {
         this.order = order;
         this.product = product;
         this.quantity = new BigDecimal(quantity);
-        this.price = new BigDecimal(product.getPrice());
+        this.price = product.getPrice();
     }
 }
