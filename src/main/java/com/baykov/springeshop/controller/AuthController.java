@@ -2,16 +2,17 @@ package com.baykov.springeshop.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class MainController {
-    @RequestMapping({"", "/"})
+public class AuthController {
+    @GetMapping({"", "/"})
     public String index(Model model) {
         return "index";
     }
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }

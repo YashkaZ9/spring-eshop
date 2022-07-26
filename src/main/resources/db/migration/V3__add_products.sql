@@ -5,4 +5,4 @@ values (1, 'Bread', 45),
        (4, 'Banana', 79),
        (5, 'Cheese', 730);
 
-alter sequence product_seq restart with 6;
+alter sequence products_seq restart with 6;

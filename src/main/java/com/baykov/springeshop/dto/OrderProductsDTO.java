@@ -12,15 +12,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDetailsDTO {
-    private Long productId;
+public class OrderProductsDTO {
+    private Long article;
     private String title;
     private BigDecimal price;
     private BigDecimal quantity;
     private BigDecimal sum;
 
-    public CartDetailsDTO(Product product) {
-        this.productId = product.getId();
+    public OrderProductsDTO(Product product) {
+        this.article = product.getId();
         this.title = product.getTitle();
         this.price = product.getPrice();
         this.quantity = BigDecimal.ONE;

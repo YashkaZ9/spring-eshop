@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -16,7 +16,12 @@
     <tr th:each="product : ${products}">
         <td th:text="${product.title}">product</td>
         <td th:text="${product.price}">0</td>
-        <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{id}/cart(id=${product.id})}">Add to cart</a></td>
+        <td sec:authorize="isAuthenticated()"><a th:href="@{/products/{productId}(productId=${product.id})}">Add to cart</a></td>
+        <td sec:authorize="hasAnyAuthority('ADMIN')">
+            <form th:method="delete" th:action="@{/products/{productId}(productId=${product.id})}">
+                <input type="submit" value="Remove">
+            </form>
+        </td>
     </tr>
 </table>
 <br>
@@ -26,10 +31,12 @@
         <tr>
             <td>Title</td>
             <td><input type="text" th:field="*{title}"></td>
+            <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</div>
         </tr>
         <tr>
             <td>Price</td>
             <td><input type="text" th:field="*{price}"></td>
+            <div style="color: red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
         </tr>
     </table>
     <button type="submit">Save</button>

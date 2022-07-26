@@ -1,8 +1,10 @@
 package com.baykov.springeshop.service;
 
 import com.baykov.springeshop.dto.UserDTO;
+import com.baykov.springeshop.entity.Order;
 import com.baykov.springeshop.entity.Role;
 import com.baykov.springeshop.entity.User;
+import com.baykov.springeshop.repo.OrderRepo;
 import com.baykov.springeshop.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,10 +25,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
+    private final OrderRepo orderRepo;
+
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, OrderRepo orderRepo) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.orderRepo = orderRepo;
     }
 
     @Override
@@ -81,6 +86,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
+    }
+
+    @Override
+    public void addOrder(Order order) {
+        orderRepo.save(order);
     }
 
     private UserDTO toDto(User user) {

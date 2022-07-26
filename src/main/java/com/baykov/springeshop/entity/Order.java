@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order {
-    private static final String SEQ_NAME = "order_seq";
+    private static final String SEQ_NAME = "orders_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
@@ -39,7 +39,7 @@ public class Order {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderContents> details;
+    private List<OrderProducts> products;
 
     private BigDecimal sum;
 

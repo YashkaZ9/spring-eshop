@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Cart</title>
@@ -20,7 +20,11 @@
         <td th:text="${product.price}">0</td>
         <td th:text="${product.quantity}">0</td>
         <td th:text="${product.sum}">0</td>
-        <td sec:authorize="isAuthenticated()"><a th:href="@{/cart/{productId}(productId=${product.productId})}">Remove</a></td>
+        <td sec:authorize="isAuthenticated()">
+            <form th:method="delete" th:action="@{/order/{productId}(productId=${product.productId})}">
+                <input type="submit" value="Remove"/>
+            </form>
+        </td>
     </tr>
 </table>
 <h4>Total sum: <b th:text="${cart.totalSum}">0</b></h4>

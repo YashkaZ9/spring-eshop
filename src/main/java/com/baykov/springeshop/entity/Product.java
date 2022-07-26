@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "products")
 public class Product {
-    private static final String SEQ_NAME = "product_seq";
+    private static final String SEQ_NAME = "products_seq";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ_NAME)
@@ -26,12 +26,12 @@ public class Product {
 
     private String description;
 
+    @Lob
+    private byte[] image;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
-
-    @Lob
-    private byte[] image;
 }

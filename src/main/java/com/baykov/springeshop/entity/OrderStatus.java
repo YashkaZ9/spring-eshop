@@ -1,5 +1,5 @@
 package com.baykov.springeshop.entity;
 
 public enum OrderStatus {
-    NEW, PAID, CLOSED
+    IN_CART, PAID, CLOSED
 }

@@ -10,14 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDTO {
+public class OrderDTO {
     private int productsCount;
     private BigDecimal totalSum = BigDecimal.ZERO;
-    private List<CartDetailsDTO> products = new ArrayList<>();
+    private List<OrderProductsDTO> products = new ArrayList<>();
 
     public void aggregate() {
         this.productsCount = products.size();
-        for (CartDetailsDTO productInfo : products) {
+        for (OrderProductsDTO productInfo : products) {
             this.totalSum = this.totalSum.add(productInfo.getSum());
         }
     }

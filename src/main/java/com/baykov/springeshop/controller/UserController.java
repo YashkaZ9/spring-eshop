@@ -8,8 +8,10 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Objects;
 
@@ -40,13 +42,16 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new UserDTO());
+    public String newUser(@ModelAttribute("user") UserDTO userDTO, Model model) {
         return "user";
     }
 
     @PostMapping("/new")
-    public String saveUser(UserDTO userDTO, Model model) {
+    public String saveUser(@ModelAttribute("person") @Valid UserDTO userDTO,
+                           BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/users";
+        }
         if (userService.save(userDTO)) {
             return "redirect:/users";
         }
@@ -71,7 +76,8 @@ public class UserController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile")
-    public String updateUserProfile(UserDTO userDTO, Model model, Principal principal) {
+    public String updateUserProfile(@Valid UserDTO userDTO, BindingResult bindingResult,
+                                    Model model, Principal principal) {
         if (principal == null || !Objects.equals(principal.getName(), userDTO.getUsername())) {
             throw new RuntimeException("You're not authorized.");
         }
@@ -79,6 +85,9 @@ public class UserController {
                 && !Objects.equals(userDTO.getPassword(), userDTO.getConfirmPassword())) {
             model.addAttribute("user", userDTO);
             return "profile";
+        }
+        if (bindingResult.hasErrors()) {
+            return "redirect:/users/profile";
         }
         userService.updateProfile(userDTO);
         return "redirect:/users/profile";

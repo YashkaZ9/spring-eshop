@@ -1,11 +1,13 @@
 package com.baykov.springeshop.service;
 
 import com.baykov.springeshop.dto.ProductDTO;
+import com.baykov.springeshop.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
     List<ProductDTO> getAll();
-    void addToUserCart(Long productId, String username);
-    void addProduct(ProductDTO productDTO);
+    Product getOne(Long id);
+    void addToOrder(Long productId, String username);
+    void addToShop(ProductDTO productDTO);
 }
