@@ -1,4 +1,2 @@
-insert into users (id, name, surname, email, phone, role, username, password)
-values (1, 'admin', 'admin', 'admin@mail.ru', '+7 123 456 78 90', 'ADMIN', 'admin', '$2a$10$42GDuH0m31LRMVanGcKvXeh3gD1fqSDm2lljriZPKsT.eLpXcKdKK');
-
-alter sequence users_seq restart with 2;
+insert into users (name, surname, email, phone, role, status, password)
+values ('admin', 'admin', 'admin@mail.ru', '+7 123 456 78 90', 'ADMIN', 'ACTIVE', '$2a$10$wstfwqiZ.OVdU53PbR5mo.ps.2.Xi8kbIGT4x3nKtrPVuJnP1Knxi');
