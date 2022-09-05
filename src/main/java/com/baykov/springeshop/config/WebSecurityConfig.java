@@ -1,9 +1,7 @@
 package com.baykov.springeshop.config;
 
-import com.baykov.springeshop.models.Role;
 import com.baykov.springeshop.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,13 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
-
-    @Autowired
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,8 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/auth/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/categories/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .httpBasic();
 //                .formLogin()
 //                .loginPage("auth/login")
 //                .loginProcessingUrl("/auth/login-process")
@@ -47,7 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .invalidateHttpSession()
 //                .deleteCookies("JSESSIONID")
 //                .clearAuthentication(true);
-                .httpBasic();
     }
 
     @Override
