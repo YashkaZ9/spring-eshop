@@ -1,14 +1,21 @@
 package com.baykov.springeshop.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = {"title", "price"})
 @AllArgsConstructor
 @Entity
 @Table(name = "products")
@@ -31,13 +38,10 @@ public class Product {
     @Size(max = 255, message = "Description should be shorter.")
     private String description;
 
-    @Column(name = "image")
-    @Lob
-    private byte[] image;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Image> images;
 
-    @ManyToMany
-    @JoinTable(name = "products_categories",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    public Product() {
+        this.images = new HashSet<>();
+    }
 }

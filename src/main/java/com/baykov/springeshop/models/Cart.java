@@ -1,17 +1,19 @@
 package com.baykov.springeshop.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,14 +28,17 @@ public class Cart {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartPosition> cartPositions;
 
-    @NotNull
-    @CreationTimestamp
-    private LocalDateTime createAt;
+    @NotNull(message = "Total sum should be specified.")
+    @Min(value = 0, message = "Total sum should be positive.")
+    @Column(name = "total_sum")
+    private BigDecimal totalSum;
 
     public Cart(User user) {
         this.user = user;
+        this.cartPositions = new HashSet<>();
+        this.totalSum = BigDecimal.ZERO;
     }
 }

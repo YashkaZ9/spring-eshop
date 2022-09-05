@@ -7,7 +7,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "title")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,6 +25,9 @@ public class Category {
     @Size(min = 2, max = 100, message = "Category title length should be between 2 and 100 symbols.")
     private String title;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany
+    @JoinTable(name = "products_categories",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;
 }

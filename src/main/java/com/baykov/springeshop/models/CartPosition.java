@@ -1,15 +1,15 @@
 package com.baykov.springeshop.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -30,5 +30,21 @@ public class CartPosition {
 
     @NotNull(message = "Quantity should be specified.")
     @Min(value = 1, message = "Quantity should be valid.")
-    private BigDecimal quantity;
+    private Long quantity;
+
+    @NotNull(message = "Sum should be specified.")
+    @Min(value = 0, message = "Sum should be positive.")
+    @Column(name = "sum")
+    private BigDecimal sum;
+
+    public CartPosition(Product product, Cart cart) {
+        this.product = product;
+        this.quantity = 0L;
+        this.sum = BigDecimal.ZERO;
+        this.cart = cart;
+    }
+
+    public CartPosition(Product product) {
+        this(product, null);
+    }
 }
