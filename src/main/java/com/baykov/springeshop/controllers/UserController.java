@@ -1,31 +1,73 @@
 package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.UserDto;
+import com.baykov.springeshop.exceptions.ExceptionUtil;
+import com.baykov.springeshop.exceptions.UserException;
 import com.baykov.springeshop.mappers.UserMapper;
 import com.baykov.springeshop.models.User;
+import com.baykov.springeshop.models.UserStatus;
 import com.baykov.springeshop.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baykov.springeshop.validators.UserValidator;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final UserValidator userValidator;
     private final UserMapper userMapper;
 
-    @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
+    @GetMapping
+    public ResponseEntity<?> getUsers() {
+        Set<User> users = userService.getUsers();
+        return new ResponseEntity<>(userMapper.fromUsers(users), HttpStatus.OK);
     }
 
-    @GetMapping
-    public List<UserDto> getUsers() {
-        List<User> users = userService.getUsers();
-        return userMapper.fromUsers(users);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return new ResponseEntity<>(userMapper.fromUser(user), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody UserDto userDto,
+                                      BindingResult errors) throws Exception {
+        User user = userService.getUserById(id);
+        userValidator.validate(userDto, errors);
+        ExceptionUtil.checkExceptions(errors, UserException.class);
+        User updatedUser = userMapper.toUser(userDto);
+        updatedUser = userService.editUser(user, updatedUser);
+        return new ResponseEntity<>(userMapper.fromUser(updatedUser), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{id}")
+    public HttpStatus deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return HttpStatus.OK;
+    }
+
+    @PatchMapping("/{id}/set-manager")
+    public HttpStatus setManager(@PathVariable Long id) {
+        userService.setManager(id);
+        return HttpStatus.ACCEPTED;
+    }
+
+    @PatchMapping("/{id}/ban")
+    public HttpStatus banUser(@PathVariable Long id) {
+        userService.changeUserStatus(id, UserStatus.BANNED);
+        return HttpStatus.ACCEPTED;
+    }
+
+    @PatchMapping("/{id}/activate")
+    public HttpStatus activateUser(@PathVariable Long id) {
+        userService.changeUserStatus(id, UserStatus.ACTIVE);
+        return HttpStatus.ACCEPTED;
     }
 }
