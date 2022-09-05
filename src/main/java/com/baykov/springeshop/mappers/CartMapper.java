@@ -1,0 +1,41 @@
+package com.baykov.springeshop.mappers;
+
+import com.baykov.springeshop.dtos.CartDto;
+import com.baykov.springeshop.dtos.CartPositionDto;
+import com.baykov.springeshop.dtos.ImageDto;
+import com.baykov.springeshop.dtos.ProductDto;
+import com.baykov.springeshop.models.Cart;
+import com.baykov.springeshop.models.CartPosition;
+import com.baykov.springeshop.models.Image;
+import com.baykov.springeshop.models.Product;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Set;
+
+@Mapper(componentModel = "spring")
+public interface CartMapper {
+    CartMapper MAPPER = Mappers.getMapper(CartMapper.class);
+
+    Image toImage(MultipartFile file) throws IOException;
+
+    ImageDto fromImage(Image image) throws IOException;
+
+    Product toProduct(ProductDto productDto);
+
+    ProductDto fromProduct(Product product);
+
+    CartPosition toCartPosition(CartPositionDto cartPositionDto);
+
+    CartPositionDto fromCartPosition(CartPosition cartPosition);
+
+    Set<CartPosition> toCartPositions(Set<CartPositionDto> cartPositionDtos);
+
+    Set<CartPositionDto> fromCartPositions(Set<CartPosition> cartPositions);
+
+    Cart toCart(CartDto cartDto);
+
+    CartDto fromCart(Cart cart);
+}

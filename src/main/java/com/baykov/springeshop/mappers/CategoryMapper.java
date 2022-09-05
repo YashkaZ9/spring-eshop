@@ -1,8 +1,10 @@
 package com.baykov.springeshop.mappers;
 
+import com.baykov.springeshop.dtos.CategoryDto;
+import com.baykov.springeshop.dtos.CategoryProductsDto;
 import com.baykov.springeshop.dtos.ImageDto;
 import com.baykov.springeshop.dtos.ProductDto;
-import com.baykov.springeshop.dtos.ProductImagesDto;
+import com.baykov.springeshop.models.Category;
 import com.baykov.springeshop.models.Image;
 import com.baykov.springeshop.models.Product;
 import org.mapstruct.Mapper;
@@ -14,8 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
-    ProductMapper MAPPER = Mappers.getMapper(ProductMapper.class);
+public interface CategoryMapper {
+    CategoryMapper MAPPER = Mappers.getMapper(CategoryMapper.class);
 
     Image toImage(MultipartFile file) throws IOException;
 
@@ -29,15 +31,19 @@ public interface ProductMapper {
 
     Set<ProductDto> fromProducts(Set<Product> products);
 
-    List<Product> toProducts(List<ProductDto> productsDtos);
+    Category toCategory(CategoryProductsDto categoryProductsDto);
 
-    List<ProductDto> fromProducts(List<Product> products);
+    CategoryProductsDto fromCategoryFull(Category category);
 
-    Product toProductFull(ProductImagesDto productImagesDto);
+    Category toCategory(CategoryDto categoryDto);
 
-    ProductImagesDto fromProductFull(Product product);
+    CategoryDto fromCategory(Category category);
 
-    Set<Product> toProductsFull(Set<ProductImagesDto> productImagesDtos);
+    Set<Category> toCategories(Set<CategoryDto> categoryDtos);
 
-    Set<ProductImagesDto> fromProductsFull(Set<Product> products);
+    Set<CategoryDto> fromCategories(Set<Category> categories);
+
+    List<Category> toCategories(List<CategoryDto> categoryDtos);
+
+    List<CategoryDto> fromCategories(List<Category> categories);
 }
