@@ -8,14 +8,14 @@ import lombok.Setter;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDto {
-    private Set<CartPositionDto> cartPositions;
+    private List<CartPositionDto> cartPositions;
 
     @NotNull(message = "Total sum should be specified.")
     @Min(value = 0, message = "Total sum should be positive.")

@@ -6,42 +6,28 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode(of = "email")
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "email")
+@ToString(exclude = "orders")
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "email")
     @Size(min = 2, max = 100, message = "Email length should be between 2 and 100 symbols.")
     @Email(message = "Email should be valid.")
     private String email;
 
-    @Column(name = "password")
     @Size(min = 2, max = 100, message = "Password length should be between 2 and 100 symbols.")
     private String password;
-
-    @Column(name = "name")
-    @Size(max = 100, message = "Name length should be not more than 100 symbols.")
-    private String name;
-
-    @Column(name = "surname")
-    @Size(max = 100, message = "Surname length should be not more than 100 symbols.")
-    private String surname;
-
-    @Column(name = "phone")
-    @Size(max = 100, message = "Phone number should be valid.")
-    private String phone;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -51,9 +37,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Cart cart;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+//    private Cart cart;
+
+    @Embedded
+    private PersonalInfo personalInfo;
 }

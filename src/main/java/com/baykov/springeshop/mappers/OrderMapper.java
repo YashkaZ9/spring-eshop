@@ -7,7 +7,7 @@ import com.baykov.springeshop.models.OrderPosition;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Set;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -21,7 +21,7 @@ public interface OrderMapper {
 
     OrderDto fromOrder(Order order);
 
-    Set<Order> toOrders(Set<OrderDto> orderDtos);
+    List<Order> toOrders(List<OrderDto> orderDtos);
 
-    Set<OrderDto> fromOrders(Set<Order> orders);
+    List<OrderDto> fromOrders(List<Order> orders);
 }

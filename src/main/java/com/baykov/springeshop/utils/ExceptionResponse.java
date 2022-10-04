@@ -1,4 +1,4 @@
-package com.baykov.springeshop.exceptions;
+package com.baykov.springeshop.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

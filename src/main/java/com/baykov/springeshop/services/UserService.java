@@ -16,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,8 +33,8 @@ public class UserService implements UserDetailsService {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Set<User> getUsers() {
-        return new HashSet<>(userRepo.findAll());
+    public List<User> getUsers() {
+        return userRepo.findAll();
     }
 
     @PostAuthorize("hasAnyAuthority('ADMIN', 'MANAGER') or returnObject.email == authentication.principal.username")
@@ -57,9 +56,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User editUser(User user, User updatedUser) {
         user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        user.setName(updatedUser.getName());
-        user.setSurname(updatedUser.getSurname());
-        user.setPhone(updatedUser.getPhone());
+        user.getPersonalInfo().setName(updatedUser.getPersonalInfo().getName());
+        user.getPersonalInfo().setSurname(updatedUser.getPersonalInfo().getSurname());
+        user.getPersonalInfo().setPhone(updatedUser.getPersonalInfo().getPhone());
         return user;
     }
 

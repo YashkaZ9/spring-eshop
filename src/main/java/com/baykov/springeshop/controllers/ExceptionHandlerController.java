@@ -1,6 +1,6 @@
 package com.baykov.springeshop.controllers;
 
-import com.baykov.springeshop.exceptions.ExceptionResponse;
+import com.baykov.springeshop.utils.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

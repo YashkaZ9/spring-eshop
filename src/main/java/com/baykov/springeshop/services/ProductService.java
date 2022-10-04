@@ -3,29 +3,20 @@ package com.baykov.springeshop.services;
 import com.baykov.springeshop.exceptions.ProductException;
 import com.baykov.springeshop.models.Product;
 import com.baykov.springeshop.repos.ProductRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class ProductService {
     private final ProductRepo productRepo;
-    private final CartService cartService;
-
-    @Autowired
-    public ProductService(ProductRepo productRepo, @Lazy CartService cartService) {
-        this.productRepo = productRepo;
-        this.cartService = cartService;
-    }
 
     public List<Product> getProducts(Integer page, Integer productsPerPage, boolean sortedByTitleAsc, boolean sortedByPriceAsc,
                                      boolean sortedByTitleDesc, boolean sortedByPriceDesc) {
@@ -54,11 +45,20 @@ public class ProductService {
                 : productRepo.findAll(PageRequest.of(page, productsPerPage)).getContent();
     }
 
+//    public List<Product> getProducts(ProductFilter filter) {
+//        var predicate = QPredicate.builder()
+//                .add(filter.getTitle(), product.title::containsIgnoreCase)
+//                .add(filter.getStartingPrice(), product.price::gt)
+//                .add(filter.getFinalPrice(), product.price::lt)
+//                .buildAnd();
+//        return productRepo.findAll(predicate);
+//    }
+
     public Product getProductById(Long id) {
         return productRepo.findById(id).orElseThrow(() -> new ProductException("This product does not exist."));
     }
 
-    public Set<Product> findProducts(String query) {
+    public List<Product> findProducts(String query) {
         return productRepo.findByTitleContainingIgnoreCase(query);
     }
 
@@ -73,19 +73,13 @@ public class ProductService {
     public Product editProduct(Long id, Product updatedProduct) {
         Product product = getProductById(id);
         product.setDescription(updatedProduct.getDescription());
-        BigDecimal price = updatedProduct.getPrice();
-        if (!price.equals(product.getPrice())) {
-            product.setPrice(price);
-            cartService.refreshCarts(product, price);
-        }
+        product.setPrice(updatedProduct.getPrice());
         return product;
     }
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @Transactional
     public void deleteProductById(Long id) {
-        Product product = getProductById(id);
-        cartService.refreshCarts(product, BigDecimal.ZERO);
         productRepo.deleteById(id);
     }
 }

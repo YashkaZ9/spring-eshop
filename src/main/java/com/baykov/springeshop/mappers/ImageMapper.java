@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ImageMapper {
@@ -17,5 +17,5 @@ public interface ImageMapper {
 
     ImageDto fromImage(Image image) throws IOException;
 
-    Set<ImageDto> fromImages(Set<Image> images) throws IOException;
+    List<ImageDto> fromImages(List<Image> images) throws IOException;
 }

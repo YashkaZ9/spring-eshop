@@ -1,7 +1,7 @@
 package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.OrderInfoDto;
-import com.baykov.springeshop.exceptions.ExceptionUtil;
+import com.baykov.springeshop.utils.ExceptionUtil;
 import com.baykov.springeshop.exceptions.OrderException;
 import com.baykov.springeshop.mappers.OrderMapper;
 import com.baykov.springeshop.models.Order;
@@ -17,7 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,32 +29,32 @@ public class OrderController {
 
     @GetMapping("/orders")
     public ResponseEntity<?> getOrders() {
-        Set<Order> orders = orderService.getOrders();
+        List<Order> orders = orderService.getOrders();
         return new ResponseEntity<>(orderMapper.fromOrders(orders), HttpStatus.OK);
     }
 
     @GetMapping("/orders/new")
     public ResponseEntity<?> getNewOrders() {
-        Set<Order> orders = orderService.getOrdersByStatus(OrderStatus.NEW);
+        List<Order> orders = orderService.getOrdersByStatus(OrderStatus.NEW);
         return new ResponseEntity<>(orderMapper.fromOrders(orders), HttpStatus.OK);
     }
 
     @GetMapping("/orders/active")
     public ResponseEntity<?> getActiveOrders() {
-        Set<Order> orders = orderService.getOrdersByStatus(OrderStatus.ACTIVE);
+        List<Order> orders = orderService.getOrdersByStatus(OrderStatus.ACTIVE);
         return new ResponseEntity<>(orderMapper.fromOrders(orders), HttpStatus.OK);
     }
 
     @GetMapping("/orders/closed")
     public ResponseEntity<?> getClosedOrders() {
-        Set<Order> orders = orderService.getOrdersByStatus(OrderStatus.CLOSED);
+        List<Order> orders = orderService.getOrdersByStatus(OrderStatus.CLOSED);
         return new ResponseEntity<>(orderMapper.fromOrders(orders), HttpStatus.OK);
     }
 
     @GetMapping("/users/{userId}/orders")
     public ResponseEntity<?> getOrdersByUser(@PathVariable Long userId) {
         User user = userService.getUserById(userId);
-        Set<Order> orders = orderService.getOrdersByUser(user);
+        List<Order> orders = orderService.getOrdersByUser(user);
         return new ResponseEntity<>(orderMapper.fromOrders(orders), HttpStatus.OK);
     }
 

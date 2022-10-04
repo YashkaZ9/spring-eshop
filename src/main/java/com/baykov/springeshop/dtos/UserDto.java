@@ -1,5 +1,6 @@
 package com.baykov.springeshop.dtos;
 
+import com.baykov.springeshop.models.PersonalInfo;
 import com.baykov.springeshop.models.Role;
 import com.baykov.springeshop.models.UserStatus;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,14 +25,8 @@ public class UserDto {
     @Size(max = 100, message = "Password length should be between 2 and 100 symbols.")
     private String password;
 
-    @Size(max = 100, message = "Name length should be not more than 100 symbols.")
-    private String name;
-
-    @Size(max = 100, message = "Surname length should be not more than 100 symbols.")
-    private String surname;
-
-    @Size(max = 100, message = "Phone number should be valid.")
-    private String phone;
+    @Embedded
+    private PersonalInfo personalInfo;
 
     @NotNull(message = "Role should be specified.")
     private Role role;

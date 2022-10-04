@@ -2,7 +2,7 @@ package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.AuthDto;
 import com.baykov.springeshop.dtos.UserDto;
-import com.baykov.springeshop.exceptions.ExceptionUtil;
+import com.baykov.springeshop.utils.ExceptionUtil;
 import com.baykov.springeshop.exceptions.UserException;
 import com.baykov.springeshop.mappers.UserMapper;
 import com.baykov.springeshop.models.User;

@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
@@ -25,10 +24,6 @@ public interface ProductMapper {
 
     ProductDto fromProduct(Product product);
 
-    Set<Product> toProducts(Set<ProductDto> productsDtos);
-
-    Set<ProductDto> fromProducts(Set<Product> products);
-
     List<Product> toProducts(List<ProductDto> productsDtos);
 
     List<ProductDto> fromProducts(List<Product> products);
@@ -37,7 +32,7 @@ public interface ProductMapper {
 
     ProductImagesDto fromProductFull(Product product);
 
-    Set<Product> toProductsFull(Set<ProductImagesDto> productImagesDtos);
+    List<Product> toProductsFull(List<ProductImagesDto> productImagesDtos);
 
-    Set<ProductImagesDto> fromProductsFull(Set<Product> products);
+    List<ProductImagesDto> fromProductsFull(List<Product> products);
 }

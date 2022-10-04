@@ -1,31 +1,32 @@
 package com.baykov.springeshop.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@EqualsAndHashCode(of = "product")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "product")
 @Entity
 @Table(name = "cart_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"cart_id", "product_id"}))
 public class CartPosition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
     private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @NotNull(message = "Quantity should be specified.")
@@ -34,7 +35,7 @@ public class CartPosition {
 
     @NotNull(message = "Sum should be specified.")
     @Min(value = 0, message = "Sum should be positive.")
-    @Column(name = "sum")
+    @Transient
     private BigDecimal sum;
 
     public CartPosition(Product product, Cart cart) {
@@ -42,9 +43,5 @@ public class CartPosition {
         this.quantity = 0L;
         this.sum = BigDecimal.ZERO;
         this.cart = cart;
-    }
-
-    public CartPosition(Product product) {
-        this(product, null);
     }
 }

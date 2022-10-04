@@ -1,11 +1,11 @@
 package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.ProductImagesDto;
-import com.baykov.springeshop.exceptions.ExceptionUtil;
 import com.baykov.springeshop.exceptions.ProductException;
 import com.baykov.springeshop.mappers.ProductMapper;
 import com.baykov.springeshop.models.Product;
 import com.baykov.springeshop.services.ProductService;
+import com.baykov.springeshop.utils.ExceptionUtil;
 import com.baykov.springeshop.validators.ProductValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<?> findProducts(@RequestParam(value = "query", required = false) String query) {
-        Set<Product> products = productService.findProducts(query);
+        List<Product> products = productService.findProducts(query);
         return new ResponseEntity<>(productMapper.fromProducts(products), HttpStatus.OK);
     }
 

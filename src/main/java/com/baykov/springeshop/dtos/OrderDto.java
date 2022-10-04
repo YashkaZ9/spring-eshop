@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class OrderDto {
     @NotNull(message = "Order id should be specified.")
     private Long id;
 
-    private Set<OrderPositionDto> orderPositions;
+    private List<OrderPositionDto> orderPositions;
 
     @NotNull(message = "Total sum should be specified.")
     @Min(value = 0, message = "Total sum should be positive.")

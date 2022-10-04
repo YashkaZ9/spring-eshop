@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
@@ -31,9 +31,9 @@ public interface CartMapper {
 
     CartPositionDto fromCartPosition(CartPosition cartPosition);
 
-    Set<CartPosition> toCartPositions(Set<CartPositionDto> cartPositionDtos);
+    List<CartPosition> toCartPositions(List<CartPositionDto> cartPositionDtos);
 
-    Set<CartPositionDto> fromCartPositions(Set<CartPosition> cartPositions);
+    List<CartPositionDto> fromCartPositions(List<CartPosition> cartPositions);
 
     Cart toCart(CartDto cartDto);
 

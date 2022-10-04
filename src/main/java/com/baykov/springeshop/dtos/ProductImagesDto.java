@@ -9,7 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,5 +26,5 @@ public class ProductImagesDto {
     @Size(max = 255, message = "Description should be shorter.")
     private String description;
 
-    private Set<ImageDto> images;
+    private List<ImageDto> images;
 }

@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,9 +21,9 @@ public class OrderService {
     private final CartService cartService;
 
     @PreAuthorize("hasAuthority('MANAGER')")
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
 //        return orderDao.getOrders();
-        return new HashSet<>(orderRepo.findAll());
+        return orderRepo.findAll();
     }
 
     @PostAuthorize("hasAuthority('MANAGER') or returnObject.user.email == authentication.principal.username")
@@ -33,21 +32,21 @@ public class OrderService {
     }
 
     @PreAuthorize("hasAuthority('MANAGER')")
-    public Set<Order> getOrdersByStatus(OrderStatus status) {
+    public List<Order> getOrdersByStatus(OrderStatus status) {
 //        return orderDao.getOrdersByStatus(status);
         return orderRepo.findOrdersByOrderStatus(status);
     }
 
-    @PreAuthorize("hasAuthority('MANAGER') or #user.email == authentication.principal.username")
-    public Set<Order> getOrdersByUser(User user) {
-        return user.getOrders();
+    @PreAuthorize("#user.email == authentication.principal.username or hasAuthority('MANAGER')")
+    public List<Order> getOrdersByUser(User user) {
+        return orderRepo.findOrderByUserEmail(user.getEmail());
     }
 
     @PreAuthorize("#user.email == authentication.principal.username")
     @Transactional
     public Order createOrder(User user, String address, String comment) {
-        Cart cart = user.getCart();
-        Set<CartPosition> cartPositions = cart.getCartPositions();
+        Cart cart = cartService.getCart(user);
+        List<CartPosition> cartPositions = cart.getCartPositions();
         if (cartPositions.isEmpty()) {
             throw new OrderException("Cart is empty. Order is not created.");
         }
@@ -77,7 +76,7 @@ public class OrderService {
     @Transactional
     public Order closeOrder(User user, Long orderId) {
         Order order = getOrderById(orderId);
-        if (!order.getUser().getId().equals(user.getId())) {
+        if (!order.getUser().getEmail().equals(user.getEmail())) {
             throw new OrderException("This user does not have this order.");
         }
         if (order.getOrderStatus().equals(OrderStatus.NEW)) {
@@ -93,8 +92,8 @@ public class OrderService {
         return order;
     }
 
-    public Set<OrderPosition> mapCartPositionsToOrderPositions(Set<CartPosition> cartPositions, Order order) {
-        return cartPositions.stream().map(cp -> mapCartPositionToOrderPosition(cp, order)).collect(Collectors.toSet());
+    public List<OrderPosition> mapCartPositionsToOrderPositions(List<CartPosition> cartPositions, Order order) {
+        return cartPositions.stream().map(cp -> mapCartPositionToOrderPosition(cp, order)).collect(Collectors.toList());
     }
 
     public OrderPosition mapCartPositionToOrderPosition(CartPosition cartPosition, Order order) {

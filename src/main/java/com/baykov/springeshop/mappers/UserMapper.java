@@ -6,13 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
+
     User toUser(UserDto userDto);
+
     UserDto fromUser(User user);
-    Set<User> toUsers(Set<UserDto> userDtos);
-    Set<UserDto> fromUsers(Set<User> users);
+
+    List<User> toUsers(List<UserDto> userDtos);
+
+    List<UserDto> fromUsers(List<User> users);
 }

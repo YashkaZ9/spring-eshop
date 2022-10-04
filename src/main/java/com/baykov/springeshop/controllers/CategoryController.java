@@ -2,7 +2,7 @@ package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.CategoryProductsDto;
 import com.baykov.springeshop.exceptions.CategoryException;
-import com.baykov.springeshop.exceptions.ExceptionUtil;
+import com.baykov.springeshop.utils.ExceptionUtil;
 import com.baykov.springeshop.mappers.CategoryMapper;
 import com.baykov.springeshop.models.Category;
 import com.baykov.springeshop.services.CategoryService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class CategoryController {
 
     @GetMapping("/search")
     public ResponseEntity<?> findCategories(@RequestParam(value = "query", required = false) String query) {
-        Set<Category> categories = categoryService.findCategories(query);
+        List<Category> categories = categoryService.findCategories(query);
         return new ResponseEntity<>(categoryMapper.fromCategories(categories), HttpStatus.OK);
     }
 

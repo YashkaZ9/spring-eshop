@@ -1,7 +1,7 @@
 package com.baykov.springeshop.controllers;
 
 import com.baykov.springeshop.dtos.UserDto;
-import com.baykov.springeshop.exceptions.ExceptionUtil;
+import com.baykov.springeshop.utils.ExceptionUtil;
 import com.baykov.springeshop.exceptions.UserException;
 import com.baykov.springeshop.mappers.UserMapper;
 import com.baykov.springeshop.models.User;
@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<?> getUsers() {
-        Set<User> users = userService.getUsers();
+        List<User> users = userService.getUsers();
         return new ResponseEntity<>(userMapper.fromUsers(users), HttpStatus.OK);
     }
 

@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -27,9 +26,9 @@ public interface CategoryMapper {
 
     ProductDto fromProduct(Product product);
 
-    Set<Product> toProducts(Set<ProductDto> productsDtos);
+    List<Product> toProducts(List<ProductDto> productsDtos);
 
-    Set<ProductDto> fromProducts(Set<Product> products);
+    List<ProductDto> fromProducts(List<Product> products);
 
     Category toCategory(CategoryProductsDto categoryProductsDto);
 
@@ -38,10 +37,6 @@ public interface CategoryMapper {
     Category toCategory(CategoryDto categoryDto);
 
     CategoryDto fromCategory(Category category);
-
-    Set<Category> toCategories(Set<CategoryDto> categoryDtos);
-
-    Set<CategoryDto> fromCategories(Set<Category> categories);
 
     List<Category> toCategories(List<CategoryDto> categoryDtos);
 

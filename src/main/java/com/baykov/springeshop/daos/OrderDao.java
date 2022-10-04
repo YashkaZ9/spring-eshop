@@ -8,8 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -17,21 +16,21 @@ import java.util.Set;
 public class OrderDao {
     private final EntityManager entityManager;
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         Session session = entityManager.unwrap(Session.class);
         String query = "select o from Order o left join fetch o.orderPositions";
-        return new HashSet<>(session.createQuery(query, Order.class).getResultList());
+        return session.createQuery(query, Order.class).getResultList();
     }
 
-    public Set<Order> getOrdersByStatus(OrderStatus status) {
+    public List<Order> getOrdersByStatus(OrderStatus status) {
         Session session = entityManager.unwrap(Session.class);
         String query = "select o from Order o left join fetch o.orderPositions where o.orderStatus = :status";
-        return new HashSet<>(session.createQuery(query, Order.class).setParameter("status", status).getResultList());
+        return session.createQuery(query, Order.class).setParameter("status", status).getResultList();
     }
 
-    public Set<Order> getOrdersByUserId(Long id) {
+    public List<Order> getOrdersByUserId(Long id) {
         Session session = entityManager.unwrap(Session.class);
         String query = "select o from Order o left join fetch o.orderPositions where o.user.id = :id";
-        return new HashSet<>(session.createQuery(query, Order.class).setParameter("id", id).getResultList());
+        return session.createQuery(query, Order.class).setParameter("id", id).getResultList();
     }
 }

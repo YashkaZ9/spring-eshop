@@ -11,9 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class CategoryService {
         return categoryRepo.findById(id).orElseThrow(() -> new CategoryException("This category does not exist."));
     }
 
-    public Set<Category> findCategories(String query) {
+    public List<Category> findCategories(String query) {
         return categoryRepo.findByTitleContainingIgnoreCase(query);
     }
 
@@ -64,9 +62,6 @@ public class CategoryService {
     public void addProduct(Long categoryId, Long productId) {
         Category category = getCategoryById(categoryId);
         Product product = productService.getProductById(productId);
-        if (category.getProducts() == null) {
-            category.setProducts(new HashSet<>());
-        }
         category.getProducts().add(product);
     }
 
